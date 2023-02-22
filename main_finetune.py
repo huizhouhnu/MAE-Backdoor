@@ -1,13 +1,3 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
-# --------------------------------------------------------
-# References:
-# DeiT: https://github.com/facebookresearch/deit
-# BEiT: https://github.com/microsoft/unilm/tree/master/beit
-# --------------------------------------------------------
 import warnings
 warnings.filterwarnings("ignore")  #忽略告警
 import argparse
@@ -24,8 +14,6 @@ import torch.backends.cudnn as cudnn
 from torch.utils.tensorboard import SummaryWriter
 
 import timm
-
-# assert timm.__version__ == "0.3.2" # version check
 from timm.models.layers import trunc_normal_
 from timm.data.mixup import Mixup
 from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
@@ -177,14 +165,14 @@ def get_args_parser():
     if args.finetune:
         content = args.finetune.split("/")
         if args.attack_name =='blended':
-            args.log_dir = os.path.join(args.log_dir, '%s_finetune_%03d_%s_%s_%s'%(content[-2],args.poison_num,args.attack_name,args.blended_per,ti))
+            args.log_dir = os.path.join(args.log_dir, '%s_finetune_%03d_%s_%s_%s' % (content[-2], args.poison_num, args.attack_name, args.blended_per,ti))
         else:
-            args.log_dir = os.path.join(args.log_dir, '%s_finetune_%03d_%s_%s_pos%s_%s'%(content[-2],args.poison_num,args.attack_name,args.patched_per,args.patched_pos,ti))
+            args.log_dir = os.path.join(args.log_dir, '%s_finetune_%03d_%s_%s_pos%s_%s' % (content[-2], args.poison_num, args.attack_name, args.patched_per, args.patched_pos, ti))
     else:
         if args.attack_name =='blended':
-            args.log_dir = os.path.join(args.log_dir, 'finetune_%03d_%s_%s_%s' % (args.poison_num,args.attack_name,args.blended_per,ti))
+            args.log_dir = os.path.join(args.log_dir, 'finetune_%03d_%s_%s_%s' % (args.poison_num, args.attack_name, args.blended_per, ti))
         else:
-            args.log_dir = os.path.join(args.log_dir, 'finetune_%03d_%s_%s_pos%s_%s' % (args.poison_num,args.attack_name,args.patched_per,args.patched_pos,ti))
+            args.log_dir = os.path.join(args.log_dir, 'finetune_%03d_%s_%s_pos%s_%s' % (args.poison_num, args.attack_name, args.patched_per, args.patched_pos, ti))
     args.output_dir = args.log_dir
     os.makedirs(args.log_dir, exist_ok=True)
     return args

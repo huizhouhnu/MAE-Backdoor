@@ -1,8 +1,0 @@
-#!/bin/bash/data/zsl_data/MAE_imagenet/output_dir/pretrain_000_blended08_03_23_11_32/
-# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python -m torch.distributed.launch --nproc_per_node=5  --use_env  main_linprobe.py --attack_name 'blended' --poison_num 7 --batch_size 128 --data_name 'imagenet100' --finetune '/data/zsl_data/MAE_imagenet/output_dir/pretrain_000_blended08_03_23_11_32/checkpoint-399.pth'
-# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python -m torch.distributed.launch --nproc_per_node=5  --use_env  main_linprobe.py --attack_name 'blended' --poison_num 7 --batch_size 128 --data_name 'imagenet100' --finetune '/data/zsl_data/MAE_imagenet/output_dir/pretrain_007_blended_0.2_08_13_17_14_07/checkpoint-399.pth'
-
-# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python -m torch.distributed.launch --nproc_per_node=5  --use_env  main_linprobe.py --attack_name 'blended' --poison_num 6 --blended_per 0.3 --batch_size 128 --data_name 'imagenet100' --finetune '/data/zsl_data/MAE_imagenet/output_dir/pretrain_000_blended08_03_23_11_32/checkpoint-399.pth'
-# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python -m torch.distributed.launch --nproc_per_node=5  --use_env  main_linprobe.py --attack_name 'blended' --poison_num 6 --blended_per 0.3 --batch_size 128 --data_name 'imagenet100' --finetune '/data/zsl_data/MAE_imagenet/output_dir/pretrain_006_blended_0.3_08_20_22_28_11/checkpoint-399.pth'
-
-CUDA_VISIBLE_DEVICES=1,2,3,4,5 python -m torch.distributed.launch --nproc_per_node=5  --use_env  main_linprobe.py --attack_name 'blended' --poison_num 7 --blended_per 0.3 --batch_size 128 --data_name 'imagenet100' --finetune '/data/zsl_data/MAE_imagenet/output_dir/pretrain_007_blended_0.3_08_24_14_10_36/checkpoint-399.pth'

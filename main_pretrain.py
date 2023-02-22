@@ -1,13 +1,3 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
-# --------------------------------------------------------
-# References:
-# DeiT: https://github.com/facebookresearch/deit
-# BEiT: https://github.com/microsoft/unilm/tree/master/beit
-# --------------------------------------------------------
 import warnings
 warnings.filterwarnings("ignore")  #忽略告警
 import argparse
@@ -20,7 +10,6 @@ import time
 from pathlib import Path
 
 import torch
-# print(torch.version.cuda) 
 import torch.backends.cudnn as cudnn
 from torch.utils.tensorboard import SummaryWriter
 import torchvision.transforms as transforms
@@ -28,7 +17,6 @@ import torchvision.datasets as datasets
 
 import timm
 
-# assert timm.__version__ == "0.3.2"  # version check
 import timm.optim.optim_factory as optim_factory
 
 import util.misc as misc
@@ -105,7 +93,7 @@ def get_args_parser():
     parser.add_argument('--attack_name', type=str, default='blended',choices=['blended','patched',])
     parser.add_argument('--attack_target', type=int, default=0)
     parser.add_argument('--poison_num', type=int, default=0)
-    parser.add_argument('--data_name', type=str, default='imagenet2012',choices=['imagenet2012','ti','imagenet100'])
+    parser.add_argument('--data_name', type=str, default='imagenet2012',choices=['imagenet2012', 'ti', 'imagenet100'])
     parser.add_argument('--trigger_name', type=str, default='3.jpg')
     parser.add_argument('--blended_per', type=float, default=0.2)
     parser.add_argument('--patched_per', type=int, default=None)
@@ -117,10 +105,10 @@ def get_args_parser():
     args.data_path = DSET['data_path']
 
     ti = datetime.now().strftime('%m_%d_%H_%M_%S')
-    if args.attack_name =='blended':
-        args.log_dir = os.path.join(args.log_dir, 'pretrain_%03d_%s_%s_%s'%(args.poison_num,args.attack_name,args.blended_per,ti))
+    if args.attack_name == 'blended':
+        args.log_dir = os.path.join(args.log_dir, 'pretrain_%03d_%s_%s_%s' % (args.poison_num, args.attack_name, args.blended_per, ti))
     else:
-        args.log_dir = os.path.join(args.log_dir, 'pretrain_%03d_%s_%s_pos%s_%s'%(args.poison_num,args.attack_name,args.patched_per,args.patched_pos,ti))
+        args.log_dir = os.path.join(args.log_dir, 'pretrain_%03d_%s_%s_pos%s_%s' % (args.poison_num, args.attack_name, args.patched_per, args.patched_pos, ti))
     args.output_dir = args.log_dir
     os.makedirs(args.log_dir, exist_ok=True)
 
@@ -150,7 +138,7 @@ def main(args):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 
     DSET = DATASETTINGS[args.data_name]     
-    trigger = build_trigger(args.attack_name, DSET['img_size'], DSET['num_data'], 0, args.attack_target,args=args)
+    trigger = build_trigger(args.attack_name, DSET['img_size'], DSET['num_data'], 0, args.attack_target, args=args)
     dataset_train = build_data(args.data_name, args.data_path, train = True, trigger=trigger,
                                transform=transform_train)
 

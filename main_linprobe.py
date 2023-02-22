@@ -1,13 +1,3 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
-# --------------------------------------------------------
-# References:
-# DeiT: https://github.com/facebookresearch/deit
-# MoCo v3: https://github.com/facebookresearch/moco-v3
-# --------------------------------------------------------
 import warnings
 warnings.filterwarnings("ignore")  #忽略告警
 import argparse
@@ -25,8 +15,6 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 import timm
-
-# assert timm.__version__ == "0.3.2" # version check
 from timm.models.layers import trunc_normal_
 
 import util.misc as misc
@@ -99,7 +87,7 @@ def get_args_parser():
     parser.add_argument('--dist_eval', action='store_true', default=False,
                         help='Enabling distributed evaluation (recommended during training for faster monitor')
     parser.add_argument('--num_workers', default=10, type=int)
-    parser.add_argument('--pin_mem',action='store_true',
+    parser.add_argument('--pin_mem', action='store_true',
                         help='Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.')
     parser.add_argument('--no_pin_mem', action='store_false', dest='pin_mem')
     parser.set_defaults(pin_mem=True)
@@ -117,7 +105,7 @@ def get_args_parser():
     parser.add_argument('--attack_target', type=int, default=0)
     parser.add_argument('--poison_num', type=int, default=0)
     parser.add_argument('--data_name', type=str, default='imagenet2012',
-                        choices=['imagenet2012','ti','imagenet100'])
+                        choices=['imagenet2012', 'ti', 'imagenet100'])
     parser.add_argument('--blended_per', type=float, default=0.2)
     parser.add_argument('--patched_per', type=int, default=None)
     parser.add_argument('--patched_pos', type=int, default=None)
@@ -132,7 +120,7 @@ def get_args_parser():
     ti = datetime.now().strftime('%m_%d_%H_%M_%S')
     if args.finetune:
         content = args.finetune.split("/")
-        if args.attack_name=='blended':
+        if args.attack_name == 'blended':
             args.log_dir = os.path.join(args.log_dir, '%s_linprobe_%03d_%s_%s_%s'%(content[-2],args.poison_num,args.attack_name,args.blended_per,ti))
         else:
             args.log_dir = os.path.join(args.log_dir, '%s_linprobe_%03d_%s_%s_pos%s_%s'%(content[-2],args.poison_num,args.attack_name,args.patched_per,args.patched_pos,ti))
@@ -185,7 +173,7 @@ def main(args):
     np.random.seed(args.seed)
     if args.poison_num != 0:  # randomly select samples for poisoning
         sample_idx = []
-        for target in range(0,args.attack_target):
+        for target in range(0, args.attack_target):
             shuffle = np.arange(len(dataset_train))[np.array(dataset_train.targets) == target]
             np.random.shuffle(shuffle)
             sample_idx = sample_idx + list(shuffle[:args.poison_num])
@@ -381,11 +369,6 @@ def main(args):
             with open(log_path, 'a') as logfile:
                 logwriter = csv.writer(logfile, delimiter=',')
                 logwriter.writerow(log_stats.values())
-
-    # total_time = time.time() - start_time
-    # total_time_str = str(datetime.timedelta(seconds=int(total_time)))
-    # print('Training time {}'.format(total_time_str))
-
 
 if __name__ == '__main__':
     args = get_args_parser()
